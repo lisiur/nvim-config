@@ -58,6 +58,12 @@ require('snacks').setup {
   indent = {},
   -- vim.ui.input
   input = {},
+
+  styles = {
+    input = {
+      relative = "cursor",
+    }
+  }
 }
 
 -----------
@@ -72,14 +78,6 @@ vim.pack.add {
   'https://github.com/nvim-mini/mini.nvim',
 }
 require('mini.icons').setup {}
-
----------------
--- Autopairs --
----------------
-vim.pack.add {
-  'https://github.com/windwp/nvim-autopairs',
-}
-require('nvim-autopairs').setup {}
 
 ------------
 -- Cursor --
@@ -108,6 +106,11 @@ require('lualine').setup {
       { 'lsp_status' },
     },
   },
+  inactive_winbar = {
+   lualine_c = {
+      { 'filename', path = 1 },
+    },
+  }
 }
 
 -------------

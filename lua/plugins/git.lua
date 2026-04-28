@@ -27,6 +27,9 @@ require('gitsigns').setup {
   end,
 }
 
+--------------
+-- CodeDiff --
+--------------
 vim.pack.add {
   'https://github.com/esmuellert/codediff.nvim',
 }
@@ -52,7 +55,9 @@ end, {
   nargs = '*', -- 允许接受参数
   bang = true, -- 允许 CodeDiff! 这种形式
 })
-
+------------
+-- Neogit --
+------------
 vim.pack.add {
   'https://github.com/NeogitOrg/neogit',
 }
@@ -74,3 +79,9 @@ end, {
   nargs = '*', -- 允许接受参数
   bang = true, -- 允许 CodeDiff! 这种形式
 })
+
+-- stylua: ignore start
+local neogit = require 'neogit' vim.keymap.set('n', '<leader>V', function()
+  neogit.open { kind = 'floating' }
+end, { desc = 'Show Neogit UI' })
+-- stylua: ignore end

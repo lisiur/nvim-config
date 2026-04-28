@@ -1,34 +1,38 @@
 # Neovim Configuration
 
-Personal Neovim configuration built on **Neovim 0.11+** using the built-in `vim.pack.add` plugin manager.
+Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.pack.add` plugin manager.
 
 ## Requirements
 
-- Neovim 0.11+
+- Neovim 0.12+
 - A [Nerd Font](https://www.nerdfonts.com/) installed and selected in your terminal
-- [fzf](https://github.com/junegunn/fzf) (for fzf-lua)
-- Optional: [lazygit](https://github.com/jesseduffield/lazygit), [yazi](https://github.com/sxyazi/yazi), [mason](https://github.com/mason-org/mason.nvim) CLI tools
+- [fzf](https://github.com/junegunn/fzf) (for fzf-lua.nvim)
+- [ripgrep](https://github.com/burntsushi/ripgrep) (for fzf-lua.nvim)
+- [yazi](https://github.com/sxyazi/yazi) (for yazi.nvim)
 
 ## Structure
 
 ```
 .
-├── init.lua                    # Entry point: options, keymaps
+├── init.lua                    # Entry point: loads core and plugins
 ├── lua/
-│   ├── plugins/
-│   │   ├── init.lua            # Loads modules in dependency order
-│   │   ├── dep.lua             # Shared dependencies (plenary)
-│   │   ├── ui.lua              # Theme, statusline, icons, cursor effects
-│   │   ├── editor.lua          # Editing, file management, search, navigation
-│   │   ├── treesitter.lua      # Syntax highlighting
-│   │   ├── cmp.lua             # Autocompletion (blink.cmp)
-│   │   ├── lsp.lua             # LSP servers, diagnostics
-│   │   ├── git.lua             # Git integration (gitsigns)
-│   │   ├── enhanced.lua        # Markdown rendering, opencode, which-key
-│   │   └── deprecated.lua      # Not loaded; kept for reference only
-│   └── utils/
-│       ├── init.lua
-│       └── lazygit.lua         # Lazygit floating window
+│   ├── core/
+│   │   ├── init.lua            # Loads options, keymaps, autocmds
+│   │   ├── options.lua         # Editor options, folding, leader key
+│   │   ├── keymaps.lua         # Global keymaps (clipboard, navigation)
+│   │   └── autocmds.lua        # Autocommands (directory buffer cleanup)
+│   └── plugins/
+│       ├── init.lua            # Loads modules in dependency order
+│       ├── dep.lua             # Shared dependencies (plenary)
+│       ├── ui.lua              # Theme, statusline, icons, cursor effects, autopairs
+│       ├── editor.lua          # Editing, file management, search, navigation
+│       ├── treesitter.lua      # Syntax highlighting
+│       ├── cmp.lua             # Autocompletion (blink.cmp)
+│       ├── lsp.lua             # LSP servers, diagnostics
+│       ├── git.lua             # Git integration (gitsigns, codediff, neogit)
+│       ├── ai.lua              # AI integration (opencode)
+│       ├── enhanced.lua        # Markdown rendering, which-key
+│       └── archived.lua        # Not loaded; kept for reference only
 ├── .stylua.toml                # StyLua formatting config
 └── nvim-pack-lock.json         # Plugin lock file
 ```
@@ -39,14 +43,14 @@ Personal Neovim configuration built on **Neovim 0.11+** using the built-in `vim.
 |----------|--------|-------------|
 | **Theme** | [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | Customized Tokyonight Night colorscheme |
 | **UI** | [snacks.nvim](https://github.com/folke/snacks.nvim) | Big file protection, indent lines, quick file open, input |
-| | [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Statusline |
+| | [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Statusline with winbar |
 | | [barbar.nvim](https://github.com/romgrk/barbar.nvim) | Tab/buffer bar |
-| | [smear-cursor.nvim](https://github.com/sphamba/smear-cursor.nvim) | Cursor animation |
+| | [smear-cursor.nvim](https://github.com/sphmba/smear-cursor.nvim) | Cursor animation |
 | | [fidget.nvim](https://github.com/j-hui/fidget.nvim) | Notification UI (overrides vim.notify) |
 | | [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | File icons |
 | | [mini.icons](https://github.com/nvim-mini/mini.nvim) | Icon set |
-| **Editing** | [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets |
-| | [nvim-surround](https://github.com/kylechui/nvim-surround) | Surrounding text objects |
+| | [nvim-autopairs](https://github.com/windwp/nvim-autopairs) | Auto-close brackets |
+| **Editing** | [nvim-surround](https://github.com/kylechui/nvim-surround) | Surrounding text objects |
 | | [flash.nvim](https://github.com/folke/flash.nvim) | Quick jump navigation |
 | | [conform.nvim](https://github.com/stevearc/conform.nvim) | Code formatting |
 | | [grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim) | Search and replace |
@@ -63,8 +67,10 @@ Personal Neovim configuration built on **Neovim 0.11+** using the built-in `vim.
 | | [mason.nvim](https://github.com/mason-org/mason.nvim) | LSP server installer |
 | | [tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim) | Inline diagnostics (classic preset) |
 | **Git** | [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git signs, hunk navigation, blame |
+| | [codediff.nvim](https://github.com/esmuellert/codediff.nvim) | Code diff (lazy-loaded) |
+| | [neogit](https://github.com/NeogitOrg/neogit) | Git interface (lazy-loaded, floating window) |
+| **AI** | [opencode.nvim](https://github.com/nickjvandyke/opencode.nvim) | Opencode integration |
 | **Enhanced** | [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) | Markdown rendering (Obsidian preset) |
-| | [opencode.nvim](https://github.com/nickjvandyke/opencode.nvim) | Opencode integration |
 | | [which-key.nvim](https://github.com/folke/which-key.nvim) | Keybinding hints (Helix preset) |
 | **Dependencies** | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Shared utility library |
 
@@ -79,7 +85,11 @@ Leader key: `<Space>`
 | `<Esc>` | n | Clear search highlights |
 | `<C-h/j/k/l>` | n | Navigate between windows |
 | `<leader>y` | n, v | Copy to system clipboard |
-| `<leader>p` | n | Paste from system clipboard |
+| `<leader>p` | n, v | Paste below (system clipboard) |
+| `<leader>P` | n, v | Paste above (system clipboard) |
+| `gp` | n | Select last pasted |
+| `y` | v | Yank (keeps cursor position) |
+| `<` / `>` | v | Indent and keep selection |
 | `gg` | n, v | Go to first line |
 | `ge` | n, v | Go to last line |
 | `gh` | n, v | Go to line start |
@@ -92,7 +102,7 @@ Leader key: `<Space>`
 
 | Key | Mode | Description |
 |-----|------|-------------|
-| `<leader>f` | n | Find files |
+| `<leader>f` | n | Find files (including hidden) |
 | `<leader>b` | n | Buffers |
 | `<leader>/` | n | Live grep (native) |
 | `<leader>/` | v | Grep visual selection |
@@ -143,11 +153,20 @@ Leader key: `<Space>`
 |-----|------|-------------|
 | `]g` / `[g` | n | Next / previous git hunk |
 | `<leader>B` | n | Git line blame (full) |
+| `<leader>V` | n | Neogit floating window |
 | `<leader>gb` | n | Git branches |
 | `<leader>gl` | n | Git log |
 | `<leader>gs` | n | Git status |
 | `<leader>gd` | n | Git diff |
 | `<leader>gf` | n | Git log (current file) |
+| `:CodeDiff` | - | Code diff (lazy-loaded) |
+| `:Neogit` | - | Neogit interface (lazy-loaded) |
+
+### Markdown
+
+| Key | Mode | Description |
+|-----|------|-------------|
+| `<leader>mr` | n | Toggle markdown rendering (buffer-local) |
 
 ### Opencode
 
@@ -162,7 +181,6 @@ Leader key: `<Space>`
 
 | Key | Mode | Description |
 |-----|------|-------------|
-| `<leader>V` | n | Lazygit floating window |
 | `<Esc>` | t | Exit terminal mode |
 
 ## Configured LSP Servers
@@ -186,4 +204,6 @@ Rust, JavaScript, TypeScript, TSX, Zig, Lua, Vue, CSS, HTML
 - **fzf-lua** is also registered as `vim.ui.select` handler
 - **Which-key** uses the Helix preset
 - **Inline diagnostics** use the classic preset from tiny-inline-diagnostic
+- **codediff.nvim and neogit** are lazy-loaded via stub commands (`:CodeDiff`, `:Neogit`)
+- **Neogit** floating window is bound to `<leader>V`
 - Style: 2-space indent, single quotes, 160 column width (see `.stylua.toml`)

@@ -8,6 +8,15 @@ vim.pack.add {
 }
 require('guess-indent').setup {}
 
+---------------
+-- Autopairs --
+---------------
+vim.pack.add {
+  'https://github.com/windwp/nvim-autopairs',
+}
+require('nvim-autopairs').setup {}
+
+
 -------------------
 -- Surround --
 -------------------
@@ -75,9 +84,9 @@ require('todo-comments').setup {
   signs = false,
 }
 
----------
--- fzf --
----------
+------------
+-- Picker --
+------------
 vim.pack.add { 'https://github.com/ibhagwan/fzf-lua' }
 local actions = require 'fzf-lua.actions'
 require('fzf-lua').setup {
