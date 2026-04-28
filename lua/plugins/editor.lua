@@ -34,9 +34,14 @@ vim.pack.add {
   'https://github.com/folke/flash.nvim',
 }
 require('flash').setup {
+  labels = "fjdkslaghuqiwoemcnb",
   modes = {
     char = { enabled = false },
   },
+  label = {
+    after = true,
+    before = true
+  }
 }
 vim.keymap.set('n', 'gw', function()
   require('flash').jump()
