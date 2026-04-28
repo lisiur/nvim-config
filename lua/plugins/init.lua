@@ -1,0 +1,9 @@
+require('plugins.dep')
+require('plugins.ui')
+require('plugins.editor')
+require('plugins.treesitter')
+require('plugins.cmp')
+require('plugins.lsp')
+require('plugins.git')
+require('plugins.enhanced')
+
