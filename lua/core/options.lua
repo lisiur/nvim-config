@@ -80,6 +80,8 @@ vim.o.confirm = true
 -- Enable reading local config files
 vim.o.exrc = true
 
+vim.opt.winborder = "rounded"
+
 vim.opt.termguicolors = true
 
 -- Default tab config

@@ -21,6 +21,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- stylua: ignore start
     map('<leader>r', vim.lsp.buf.rename, '[R]ename')
     map('<leader>k', function() vim.lsp.buf.hover { border = 'rounded' } end, 'Show LSP documentation')
+    map('K', function() vim.lsp.buf.hover { border = 'rounded' } end, 'Show LSP documentation')
     -- stylua: ignore end
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)

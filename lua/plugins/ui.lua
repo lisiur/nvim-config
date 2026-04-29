@@ -18,11 +18,12 @@ require('tokyonight').setup {
     color.orange = '#fd9353'
     color.yellow = '#F9DD65'
     color.green = '#76AF6D'
-    color.blue = '#5ad4e6'
+    color.blue = '#82A1F1'
     color.purple = '#948ae3'
     color.cyan = '#7CD1E3'
   end,
   on_highlights = function(hl, c)
+    hl.WinSeparator = { fg = c.comment }
     hl.Keyword = { fg = c.red, italic = true }
     hl.DiagnosticUnnecessary = { fg = '#7E7B81' }
     hl.Function = { fg = c.green }
@@ -61,9 +62,9 @@ require('snacks').setup {
 
   styles = {
     input = {
-      relative = "cursor",
-    }
-  }
+      relative = 'cursor',
+    },
+  },
 }
 
 -----------
@@ -107,10 +108,10 @@ require('lualine').setup {
     },
   },
   inactive_winbar = {
-   lualine_c = {
+    lualine_c = {
       { 'filename', path = 1 },
     },
-  }
+  },
 }
 
 -------------

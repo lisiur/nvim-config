@@ -16,7 +16,6 @@ vim.pack.add {
 }
 require('nvim-autopairs').setup {}
 
-
 -------------------
 -- Surround --
 -------------------
@@ -34,14 +33,14 @@ vim.pack.add {
   'https://github.com/folke/flash.nvim',
 }
 require('flash').setup {
-  labels = "fjdkslaghuqiwoemcnb",
+  labels = 'fjdkslaghuqiwoemcnb',
   modes = {
     char = { enabled = false },
   },
   label = {
     after = true,
-    before = true
-  }
+    before = true,
+  },
 }
 vim.keymap.set('n', 'gw', function()
   require('flash').jump()
@@ -109,7 +108,7 @@ require('fzf-lua').setup {
 local FzfLua = require 'fzf-lua'
 -- stylua: ignore start
 -- Buffers and files
-vim.keymap.set({'n'}, "<leader>b", function() FzfLua.buffers() end, {desc = "Buffers" })
+vim.keymap.set({'n'}, "<leader>bb", function() FzfLua.buffers() end, {desc = "Buffers" })
 vim.keymap.set({'n'}, "<leader>f", function() FzfLua.files({
   hidden = true,
 }) end, {desc = "Find Files" })
@@ -165,4 +164,14 @@ require('yazi').setup {
 -- stylua: ignore start
 vim.keymap.set('n', '<leader>e', function() require('yazi').yazi() end, { desc = 'Open Yazi in current file directory' })
 vim.keymap.set('n', '<leader>E', function() require('yazi').yazi({}, vim.fn.getcwd()) end, { desc = 'Open Yazi in current working directory' })
+-- stylua: ignore end
+
+-------------------
+-- Buffer Delete --
+-------------------
+vim.pack.add {
+  'https://github.com/nvim-mini/mini.nvim',
+}
+-- stylua: ignore start
+vim.keymap.set('n', '<leader>bc', function() require('mini.bufremove').delete(0, true) end, { desc = 'Close buffer' })
 -- stylua: ignore end
