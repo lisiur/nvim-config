@@ -173,5 +173,5 @@ vim.pack.add {
   'https://github.com/nvim-mini/mini.nvim',
 }
 -- stylua: ignore start
-vim.keymap.set('n', '<leader>bc', function() require('mini.bufremove').delete(0, true) end, { desc = 'Close buffer' })
+vim.keymap.set('n', '<leader>bd', function() require('mini.bufremove').delete(0, true) end, { desc = 'Close buffer' })
 -- stylua: ignore end

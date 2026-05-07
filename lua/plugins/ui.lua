@@ -86,7 +86,15 @@ require('mini.icons').setup {}
 vim.pack.add {
   'https://github.com/sphamba/smear-cursor.nvim',
 }
-require('smear_cursor').setup {}
+require('smear_cursor').setup {
+  stiffness = 0.8,                      -- 0.6      [0, 1]
+  trailing_stiffness = 0.6,             -- 0.45     [0, 1]
+  stiffness_insert_mode = 0.7,          -- 0.5      [0, 1]
+  trailing_stiffness_insert_mode = 0.7, -- 0.5      [0, 1]
+  damping = 0.95,                       -- 0.85     [0, 1]
+  damping_insert_mode = 0.95,           -- 0.9      [0, 1]
+  distance_stop_animating = 0.5,        -- 0.1      > 0
+}
 
 ----------------
 -- Statusline --
@@ -108,8 +116,11 @@ require('lualine').setup {
     },
   },
   inactive_winbar = {
-    lualine_c = {
+    lualine_a = {
       { 'filename', path = 1 },
+    },
+    lualine_x = {
+      { 'lsp_status' },
     },
   },
 }
@@ -120,7 +131,9 @@ require('lualine').setup {
 vim.pack.add {
   'https://github.com/romgrk/barbar.nvim',
 }
-require('barbar').setup {}
+require('barbar').setup {
+  no_name_title = '',
+}
 
 -- stylua: ignore start
 vim.keymap.set('n', 'H', '<Cmd>BufferPrevious<CR>', { desc = 'Previous buffer' })

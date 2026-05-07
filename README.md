@@ -98,7 +98,7 @@ Leader key: `<Space>`
 | `H` / `L` | n | Previous / next buffer |
 | `<A-<>` / `<A->>` | n | Move buffer previous / next |
 | `<leader><leader>y` | n | Copy diagnostic message to clipboard |
-| `<leader>bc` | n | Close buffer (mini.bufremove) |
+| `<leader>bd` | n | Close buffer (mini.bufremove) |
 
 ### File & Search (fzf-lua)
 
