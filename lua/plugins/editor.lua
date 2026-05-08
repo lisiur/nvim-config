@@ -39,7 +39,7 @@ require('flash').setup {
   },
   label = {
     after = true,
-    before = true,
+    before = false,
   },
 }
 vim.keymap.set('n', 'gw', function()
