@@ -12,9 +12,10 @@ vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'Indent left and keep selection' })
 vim.keymap.set({ 'v' }, '>', '>gv', { desc = 'Indent right and keep selection' })
 
 -- Copy to system clipboard
-vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = 'Copy to system clipboard' })
+vim.keymap.set({ 'n' }, '<leader>yy', '"+yy', { desc = 'Copy line to system clipboard' })
+vim.keymap.set({ 'v' }, '<leader>yy', '"+y', { desc = 'Copy selection to system clipboard' })
 -- Select last pasted
-vim.keymap.set("n", "gp", "`[v`]", { desc = "Select last pasted" })
+vim.keymap.set('n', 'gp', '`[v`]', { desc = 'Select last pasted' })
 -- Paste from system clipboard
 vim.keymap.set({ 'n', 'v' }, '<leader>p', [["+p]], { desc = 'Paste below (system clipboard)' })
 vim.keymap.set({ 'n', 'v' }, '<leader>P', [["+P]], { desc = 'Paste above (system clipboard)' })
@@ -29,7 +30,7 @@ vim.keymap.set({ 'n', 'v' }, 'gl', '$', { desc = 'Goto line end' })
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
 -- Copy diagnostic to system clipboard
-vim.keymap.set('n', '<leader><leader>y', function()
+vim.keymap.set('n', '<leader>yd', function()
   local diags = vim.diagnostic.get(0, { lnum = vim.fn.line '.' - 1 })
   if #diags > 0 then
     -- Copies the message of the first diagnostic on the current line to the + register (clipboard)
@@ -38,4 +39,4 @@ vim.keymap.set('n', '<leader><leader>y', function()
   end
 end, { desc = 'Copy diagnostic message' })
 
-
+require 'core.keymaps_opencode'

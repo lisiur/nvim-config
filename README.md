@@ -20,7 +20,10 @@ Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.
 │   │   ├── init.lua            # Loads options, keymaps, autocmds
 │   │   ├── options.lua         # Editor options, folding, leader key
 │   │   ├── keymaps.lua         # Global keymaps (clipboard, navigation)
-│   │   └── autocmds.lua        # Autocommands (directory buffer cleanup, highlight on yank)
+│   │   ├── keymaps_opencode.lua # Opencode keymaps (via zellij)
+│   │   ├── autocmds.lua        # Autocommands (directory buffer cleanup, highlight on yank)
+│   │   └── utils/
+│   │       └── zellij.lua      # Zellij pane management utility
 │   └── plugins/
 │       ├── init.lua            # Loads modules in dependency order
 │       ├── dep.lua             # Shared dependencies (plenary)
@@ -30,9 +33,8 @@ Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.
 │       ├── cmp.lua             # Autocompletion (blink.cmp)
 │       ├── lsp.lua             # LSP servers, diagnostics
 │       ├── git.lua             # Git integration (gitsigns, codediff, neogit)
-│       ├── ai.lua              # AI integration (opencode)
 │       ├── enhanced.lua        # Markdown rendering, which-key
-│       └── archived.lua        # Not loaded; kept for reference only
+│       └── archived.lua        # Not loaded; kept for reference only (includes opencode)
 ├── .stylua.toml                # StyLua formatting config
 └── nvim-pack-lock.json         # Plugin lock file
 ```
@@ -70,7 +72,6 @@ Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.
 | **Git** | [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git signs, hunk navigation, blame |
 | | [codediff.nvim](https://github.com/esmuellert/codediff.nvim) | Code diff (lazy-loaded via `:CodeDiff`) |
 | | [neogit](https://github.com/NeogitOrg/neogit) | Git interface (lazy-loaded via `:Neogit`, floating window) |
-| **AI** | [opencode.nvim](https://github.com/nickjvandyke/opencode.nvim) | Opencode integration |
 | **Enhanced** | [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) | Markdown rendering (Obsidian preset) |
 | | [which-key.nvim](https://github.com/folke/which-key.nvim) | Keybinding hints (Helix preset) |
 | **Dependencies** | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Shared utility library |
@@ -85,7 +86,8 @@ Leader key: `<Space>`
 |-----|------|-------------|
 | `<Esc>` | n | Clear search highlights |
 | `<C-h/j/k/l>` | n | Navigate between windows |
-| `<leader>y` | n, v | Copy to system clipboard |
+| `<leader>yy` | n | Copy line to system clipboard |
+| `<leader>yy` | v | Copy selection to system clipboard |
 | `<leader>p` | n, v | Paste below (system clipboard) |
 | `<leader>P` | n, v | Paste above (system clipboard) |
 | `gp` | n | Select last pasted |
@@ -97,7 +99,7 @@ Leader key: `<Space>`
 | `gl` | n, v | Go to line end |
 | `H` / `L` | n | Previous / next buffer |
 | `<A-<>` / `<A->>` | n | Move buffer previous / next |
-| `<leader><leader>y` | n | Copy diagnostic message to clipboard |
+| `<leader>yd` | n | Copy diagnostic message to clipboard |
 | `<leader>bd` | n | Close buffer (mini.bufremove) |
 
 ### File & Search (fzf-lua)
@@ -172,14 +174,15 @@ Leader key: `<Space>`
 |-----|------|-------------|
 | `<leader>mr` | n | Toggle markdown rendering (buffer-local) |
 
-### Opencode
+### Opencode (via Zellij)
 
 | Key | Mode | Description |
 |-----|------|-------------|
-| `<leader>oc` | n, x | Toggle opencode |
-| `<leader>oo` | n, x | Ask opencode (`@this: `) |
-| `<leader>oa` | n, x | Execute opencode action |
-| `<leader>or` | n, x | Add reference to opencode (operator) |
+| `<leader>oc` | n, v | Toggle opencode |
+| `<leader>ox` | n, v | Close opencode |
+| `<leader>oo` | n, v | Focus opencode |
+| `<leader>or` | n, v | Send reference to opencode |
+| `<leader>oi` | n, v | Send instruction to opencode |
 
 ### Other
 
