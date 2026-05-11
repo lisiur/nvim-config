@@ -9,12 +9,49 @@ local function focus_nvim()
   vim.fn.system(string.format('zellij action focus-pane-id %s', nvim_pane))
 end
 
-local function get_current_reference()
+---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"'
+local function get_current_reference(placeholder)
+  if not placeholder or placeholder == '' then
+    placeholder = '@this'
+  end
+  if placeholder == '@buffer' then
+    return vim.fn.fnamemodify(vim.fn.resolve(vim.fn.expand '%:p'), ':~:.')
+  end
+
+  if placeholder == '@buffers' then
+    local bufs = {}
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.bo[buf].buflisted and vim.api.nvim_buf_is_loaded(buf) then
+        local name = vim.api.nvim_buf_get_name(buf)
+        if name ~= '' then
+          table.insert(bufs, vim.fn.fnamemodify(vim.fn.resolve(name), ':~:.'))
+        end
+      end
+    end
+    return table.concat(bufs, '\n')
+  end
+
+  if placeholder == '@diagnostics' then
+    local buf = vim.api.nvim_get_current_buf()
+    local diags = vim.diagnostic.get(buf)
+    if #diags == 0 then
+      return 'No diagnostics found.'
+    end
+    local file_path = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.expand '%:p'), ':~:.')
+    local lines = {}
+    for _, d in ipairs(diags) do
+      local severity = vim.diagnostic.severity[d.severity]
+      table.insert(lines, string.format('%s:%d:%d: %s: %s', file_path, d.lnum + 1, d.col + 1, severity, d.message))
+    end
+    return table.concat(lines, '\n')
+  end
+
   local mode = vim.api.nvim_get_mode().mode
   local file_path = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.expand '%:p'), ':~:.')
 
   if not mode:match '[vV]' then
-    return file_path
+    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return string.format('%s:L%d:C%d', file_path, row, col + 1)
   end
 
   local v_start = vim.fn.getpos 'v'
@@ -38,6 +75,14 @@ end
 ---@return table manager with show, hide, toggle, focus, close, send_ref, send_instruction
 function M.create(opts)
   local pane_id = nil
+
+  vim.api.nvim_create_autocmd('VimLeavePre', {
+    callback = function()
+      if pane_id then
+        vim.fn.system(string.format('zellij action close-pane --pane-id %s', pane_id))
+      end
+    end,
+  })
 
   local function is_alive()
     if not pane_id then
@@ -127,27 +172,31 @@ function M.create(opts)
     end
   end
 
-  local function send_reference()
-    operate(get_current_reference() .. ' ')
+  ---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"'
+  local function send_reference(placeholder)
+    operate(get_current_reference(placeholder) .. ' ')
   end
 
-  local function send_instruction()
-    local current_ref = get_current_reference()
-    local prefix = '@this:'
+  ---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"'
+  local function send_instruction(placeholder)
+    local current_ref = get_current_reference(placeholder)
+    local prefix = placeholder or '@this'
 
     vim.ui.input({
       prompt = 'Instruction: ',
-      default = prefix .. ' ',
+      default = prefix .. ': ',
       highlight = function(input)
         local highlights = {}
-        local start_idx = 1
-        while true do
-          local s, e = input:find('@this', start_idx)
-          if not s then
-            break
+        for _, ph in ipairs({ '@this', '@buffer', '@buffers', '@diagnostics' }) do
+          local start_idx = 1
+          while true do
+            local s, e = input:find(ph, start_idx)
+            if not s then
+              break
+            end
+            table.insert(highlights, { s - 1, e, 'Keyword' })
+            start_idx = e + 1
           end
-          table.insert(highlights, { s - 1, e, 'Keyword' })
-          start_idx = e + 1
         end
         return highlights
       end,

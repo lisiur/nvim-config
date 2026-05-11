@@ -181,8 +181,14 @@ Leader key: `<Space>`
 | `<leader>oc` | n, v | Toggle opencode |
 | `<leader>ox` | n, v | Close opencode |
 | `<leader>oo` | n, v | Focus opencode |
-| `<leader>or` | n, v | Send reference to opencode |
-| `<leader>oi` | n, v | Send instruction to opencode |
+| `<leader>ori` | n, v | Send reference (cursor) to opencode |
+| `<leader>orb` | n, v | Send reference (buffer) to opencode |
+| `<leader>orB` | n, v | Send reference (buffers) to opencode |
+| `<leader>ord` | n, v | Send reference (diagnostics) to opencode |
+| `<leader>oii` | n, v | Send instruction (cursor) to opencode |
+| `<leader>oib` | n, v | Send instruction (buffer) to opencode |
+| `<leader>oiB` | n, v | Send instruction (buffers) to opencode |
+| `<leader>oid` | n, v | Send instruction (diagnostics) to opencode |
 
 ### Other
 
