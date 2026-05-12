@@ -181,14 +181,17 @@ Leader key: `<Space>`
 | `<leader>oc` | n, v | Toggle opencode |
 | `<leader>ox` | n, v | Close opencode |
 | `<leader>oo` | n, v | Focus opencode |
+| `<leader>on` | n, v | New opencode session |
 | `<leader>ori` | n, v | Send reference (cursor) to opencode |
 | `<leader>orb` | n, v | Send reference (buffer) to opencode |
 | `<leader>orB` | n, v | Send reference (buffers) to opencode |
-| `<leader>ord` | n, v | Send reference (diagnostics) to opencode |
+| `<leader>ord` | n, v | Send reference (diagnostic) to opencode |
+| `<leader>orD` | n, v | Send reference (diagnostics) to opencode |
 | `<leader>oii` | n, v | Send instruction (cursor) to opencode |
 | `<leader>oib` | n, v | Send instruction (buffer) to opencode |
 | `<leader>oiB` | n, v | Send instruction (buffers) to opencode |
-| `<leader>oid` | n, v | Send instruction (diagnostics) to opencode |
+| `<leader>oid` | n, v | Send instruction (diagnostic) to opencode |
+| `<leader>oiD` | n, v | Send instruction (diagnostics) to opencode |
 
 ### Other
 
@@ -218,6 +221,7 @@ Rust, JavaScript, TypeScript, TSX, Zig, Lua, Vue, CSS, HTML
 - **fzf-lua** is registered as the `vim.ui.select` handler
 - **Which-key** uses the Helix preset
 - **Inline diagnostics** use the classic preset from tiny-inline-diagnostic
+- **Zellij utility** provides `send_keys` for programmatic key sequence input (chars, key combos, delays)
 - **codediff.nvim and neogit** are lazy-loaded via stub commands (`:CodeDiff`, `:Neogit`)
 - **Neogit** floating window is bound to `<leader>V`
 - **todo-comments** has signs disabled

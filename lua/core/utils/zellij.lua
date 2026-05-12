@@ -9,7 +9,7 @@ local function focus_nvim()
   vim.fn.system(string.format('zellij action focus-pane-id %s', nvim_pane))
 end
 
----@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"'
+---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"' | '"@diagnostic"'
 local function get_current_reference(placeholder)
   if not placeholder or placeholder == '' then
     placeholder = '@this'
@@ -46,6 +46,21 @@ local function get_current_reference(placeholder)
     return table.concat(lines, '\n')
   end
 
+  if placeholder == '@diagnostic' then
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    local diags = vim.diagnostic.get(vim.api.nvim_get_current_buf(), { lnum = row - 1 })
+    if #diags == 0 then
+      return 'No diagnostic at cursor.'
+    end
+    local file_path = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.expand '%:p'), ':~:.')
+    local lines = {}
+    for _, d in ipairs(diags) do
+      local severity = vim.diagnostic.severity[d.severity]
+      table.insert(lines, string.format('%s:%d:%d: %s: %s', file_path, d.lnum + 1, d.col + 1, severity, d.message))
+    end
+    return table.concat(lines, '\n')
+  end
+
   local mode = vim.api.nvim_get_mode().mode
   local file_path = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.expand '%:p'), ':~:.')
 
@@ -71,8 +86,23 @@ local function get_current_reference(placeholder)
   end
 end
 
+---@class ZellijSendKey
+---@field chars? string
+---@field key? string
+---@field sleep? number
+
+---@class ZellijManager
+---@field show fun()
+---@field hide fun()
+---@field toggle fun()
+---@field focus fun()
+---@field close fun()
+---@field send_keys fun(items: ZellijSendKey[], config?: { focus: boolean? })
+---@field send_reference fun(placeholder?: '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"' | '"@diagnostic"')
+---@field send_instruction fun(placeholder?: '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"' | '"@diagnostic"')
+
 ---@param opts { cmd: string }
----@return table manager with show, hide, toggle, focus, close, send_ref, send_instruction
+---@return ZellijManager
 function M.create(opts)
   local pane_id = nil
 
@@ -172,12 +202,35 @@ function M.create(opts)
     end
   end
 
-  ---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"'
+  ---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"' | '"@diagnostic"'
   local function send_reference(placeholder)
     operate(get_current_reference(placeholder) .. ' ')
   end
 
-  ---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"'
+  ---@param items { chars?: string, key?: string, sleep?: number }[]
+  ---@param config? { focus: boolean? }
+  local function send_keys(items, config)
+    if not is_alive() then
+      return
+    end
+    config = config or {}
+    for _, item in ipairs(items) do
+      if item.chars then
+        local escaped = (item.chars:gsub("'", "'\\''"))
+        vim.fn.system(string.format("zellij action write-chars --pane-id %s '%s'", pane_id, escaped))
+      elseif item.key then
+        vim.fn.system(string.format('zellij action send-keys --pane-id %s "%s"', pane_id, item.key))
+      end
+      if item.sleep then
+        vim.uv.sleep(item.sleep)
+      end
+    end
+    if config.focus then
+      focus_nvim()
+    end
+  end
+
+  ---@param placeholder? '"@this"' | '"@buffer"' | '"@buffers"' | '"@diagnostics"' | '"@diagnostic"'
   local function send_instruction(placeholder)
     local current_ref = get_current_reference(placeholder)
     local prefix = placeholder or '@this'
@@ -187,7 +240,7 @@ function M.create(opts)
       default = prefix .. ': ',
       highlight = function(input)
         local highlights = {}
-        for _, ph in ipairs({ '@this', '@buffer', '@buffers', '@diagnostics' }) do
+        for _, ph in ipairs({ '@this', '@buffer', '@buffers', '@diagnostics', '@diagnostic' }) do
           local start_idx = 1
           while true do
             local s, e = input:find(ph, start_idx)
@@ -216,6 +269,7 @@ function M.create(opts)
     toggle = toggle,
     focus = focus,
     close = close,
+    send_keys = send_keys,
     send_reference = send_reference,
     send_instruction = send_instruction,
   }
