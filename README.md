@@ -23,7 +23,8 @@ Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.
 │   │   ├── keymaps_opencode.lua # Opencode keymaps (via zellij)
 │   │   ├── autocmds.lua        # Autocommands (directory buffer cleanup, highlight on yank)
 │   │   └── utils/
-│   │       └── zellij.lua      # Zellij pane management utility
+│   │       ├── zellij.lua      # Zellij pane management utility
+│   │       └── lazy_cmd.lua    # Lazy command loader utility
 │   └── plugins/
 │       ├── init.lua            # Loads modules in dependency order
 │       ├── dep.lua             # Shared dependencies (plenary)
@@ -32,7 +33,7 @@ Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.
 │       ├── treesitter.lua      # Syntax highlighting
 │       ├── cmp.lua             # Autocompletion (blink.cmp)
 │       ├── lsp.lua             # LSP servers, diagnostics
-│       ├── git.lua             # Git integration (gitsigns, codediff, neogit)
+│       ├── git.lua             # Git integration (gitsigns, lazygit)
 │       ├── enhanced.lua        # Markdown rendering, which-key
 │       └── archived.lua        # Not loaded; kept for reference only (includes opencode)
 ├── .stylua.toml                # StyLua formatting config
@@ -70,8 +71,7 @@ Personal Neovim configuration built on **Neovim 0.12+** using the built-in `vim.
 | | [mason.nvim](https://github.com/mason-org/mason.nvim) | LSP server installer |
 | | [tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim) | Inline diagnostics (classic preset) |
 | **Git** | [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git signs, hunk navigation, blame |
-| | [codediff.nvim](https://github.com/esmuellert/codediff.nvim) | Code diff (lazy-loaded via `:CodeDiff`) |
-| | [neogit](https://github.com/NeogitOrg/neogit) | Git interface (lazy-loaded via `:Neogit`, floating window) |
+| | [lazygit.nvim](https://github.com/kdheepak/lazygit.nvim) | LazyGit integration (floating window) |
 | **Enhanced** | [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) | Markdown rendering (Obsidian preset) |
 | | [which-key.nvim](https://github.com/folke/which-key.nvim) | Keybinding hints (Helix preset) |
 | **Dependencies** | [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | Shared utility library |
@@ -137,6 +137,7 @@ Leader key: `<Space>`
 | `gy` | n | Go to type definition |
 | `gRi` | n | Incoming calls |
 | `gRo` | n | Outgoing calls |
+| `K` | n | Hover documentation (rounded border) |
 | `<leader>r` | n | Rename |
 | `<leader>k` | n | Hover documentation (rounded border) |
 | `<leader>a` | n | Code actions |
@@ -159,15 +160,12 @@ Leader key: `<Space>`
 |-----|------|-------------|
 | `]g` / `[g` | n | Next / previous git hunk |
 | `<leader>B` | n | Git line blame (full) |
-| `<leader>gD` | n | Code diff |
-| `<leader>V` | n | Neogit floating window |
+| `<leader>V` | n | LazyGit |
 | `<leader>gb` | n | Git branches |
 | `<leader>gl` | n | Git log |
 | `<leader>gs` | n | Git status |
 | `<leader>gd` | n | Git diff |
 | `<leader>gf` | n | Git log (current file) |
-| `:CodeDiff` | - | Code diff (lazy-loaded) |
-| `:Neogit` | - | Neogit interface (lazy-loaded) |
 
 ### Markdown
 
@@ -224,8 +222,6 @@ Rust, JavaScript, TypeScript, TSX, Zig, Lua, Vue, CSS, HTML, Prisma
 - **Which-key** uses the Helix preset
 - **Inline diagnostics** use the classic preset from tiny-inline-diagnostic
 - **Zellij utility** provides `send_keys` for programmatic key sequence input (chars, key combos, delays)
-- **codediff.nvim and neogit** are lazy-loaded via stub commands (`:CodeDiff`, `:Neogit`)
-- **Neogit** floating window is bound to `<leader>V`
 - **todo-comments** has signs disabled
 - **blink.cmp** uses `preset = 'none'` with fully custom key bindings, signature help enabled
 - **Yank highlight** briefly highlights text on yank via `TextYankPost` autocmd
