@@ -159,6 +159,7 @@ Leader key: `<Space>`
 |-----|------|-------------|
 | `]g` / `[g` | n | Next / previous git hunk |
 | `<leader>B` | n | Git line blame (full) |
+| `<leader>gD` | n | Code diff |
 | `<leader>V` | n | Neogit floating window |
 | `<leader>gb` | n | Git branches |
 | `<leader>gl` | n | Git log |
@@ -203,12 +204,13 @@ Leader key: `<Space>`
 
 - **rust_analyzer** — Rust
 - **ts_ls** — TypeScript / JavaScript
+- **harper_ls** — Prose / grammar linting
 - **lua_ls** — Lua (formatting disabled, handled by StyLua via conform)
 - **stylua** — Lua formatter
 
 ## Treesitter Languages
 
-Rust, JavaScript, TypeScript, TSX, Zig, Lua, Vue, CSS, HTML
+Rust, JavaScript, TypeScript, TSX, Zig, Lua, Vue, CSS, HTML, Prisma
 
 ## Notes
 

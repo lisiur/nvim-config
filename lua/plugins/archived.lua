@@ -1,3 +1,5 @@
+local lazy_cmd = require('core.utils.lazy_cmd').lazy_cmd
+
 ---------------
 -- Telescope --
 ---------------
@@ -79,4 +81,24 @@ vim.keymap.set({ 'n', 'x' }, '<leader>oa', function() require('opencode').select
 vim.keymap.set({ 'n', 'x' }, '<leader>or', function() return require('opencode').operator('@this ') end, { desc = 'Add reference to opencode', expr = true })
 -- vim.keymap.set('n', '<S-C-u>', function() require('opencode').command 'session.half.page.up' end, { desc = 'Scroll opencode up' })
 -- vim.keymap.set('n', '<S-C-d>', function() require('opencode').command 'session.half.page.down' end, { desc = 'Scroll opencode down' })
+-- stylua: ignore end
+
+--------------
+-- CodeDiff --
+--------------
+vim.pack.add { 'https://github.com/esmuellert/codediff.nvim' }
+lazy_cmd('CodeDiff', 'codediff.nvim')
+-- stylua: ignore start
+vim.keymap.set('n', '<leader>gD', '<Cmd>CodeDiff<CR>', { desc = 'Code diff' })
+-- stylua: ignore end
+
+------------
+-- Neogit --
+------------
+vim.pack.add { 'https://github.com/NeogitOrg/neogit' }
+lazy_cmd('Neogit', 'neogit')
+
+local neogit = require 'neogit'
+-- stylua: ignore start
+vim.keymap.set('n', '<leader>V', function() neogit.open { kind = 'floating' } end, { desc = 'Show Neogit UI' })
 -- stylua: ignore end

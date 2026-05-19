@@ -28,60 +28,11 @@ require('gitsigns').setup {
 }
 
 --------------
--- CodeDiff --
+-- LazyGit --
 --------------
 vim.pack.add {
-  'https://github.com/esmuellert/codediff.nvim',
+  'https://github.com/kdheepak/lazygit.nvim',
 }
-vim.api.nvim_create_user_command('CodeDiff', function(opts)
-  -- 1. 立即删除这个存根命令，避免递归冲突
-  vim.api.nvim_del_user_command 'CodeDiff'
-
-  -- 2. 手动加载插件 (:packadd)
-  vim.cmd 'packadd codediff.nvim'
-
-  -- 3. 转发执行原本的命令及其参数
-  -- 使用 pcall 是为了防止插件加载后若没定义该命令导致报错
-  local success, _ = pcall(vim.api.nvim_cmd, {
-    cmd = 'CodeDiff',
-    args = opts.fargs,
-    bang = opts.bang,
-  }, {})
-
-  if not success then
-    print '插件加载成功，但命令 CodeDiff 未能执行'
-  end
-end, {
-  nargs = '*', -- 允许接受参数
-  bang = true, -- 允许 CodeDiff! 这种形式
-})
-------------
--- Neogit --
-------------
-vim.pack.add {
-  'https://github.com/NeogitOrg/neogit',
-}
-vim.api.nvim_create_user_command('Neogit', function(opts)
-  vim.api.nvim_del_user_command 'Neogit'
-
-  vim.cmd 'packadd neogit'
-
-  local success, _ = pcall(vim.api.nvim_cmd, {
-    cmd = 'Neogit',
-    args = opts.fargs,
-    bang = opts.bang,
-  }, {})
-
-  if not success then
-    print '插件加载成功，但命令 Neogit 未能执行'
-  end
-end, {
-  nargs = '*', -- 允许接受参数
-  bang = true, -- 允许 CodeDiff! 这种形式
-})
-
 -- stylua: ignore start
-local neogit = require 'neogit' vim.keymap.set('n', '<leader>V', function()
-  neogit.open { kind = 'floating' }
-end, { desc = 'Show Neogit UI' })
+vim.keymap.set('n', '<leader>V', "<cmd>LazyGit<cr>", { desc = 'LazyGit' })
 -- stylua: ignore end

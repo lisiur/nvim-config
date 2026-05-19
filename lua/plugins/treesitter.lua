@@ -9,10 +9,10 @@ vim.pack.add {
 require('nvim-treesitter').setup {
   install_dir = vim.fn.stdpath 'data' .. '/site',
 }
-require('nvim-treesitter').install { 'rust', 'javascript', 'typescript', 'tsx', 'zig', 'lua', 'vue', 'css', 'html' }
+require('nvim-treesitter').install { 'rust', 'javascript', 'typescript', 'tsx', 'zig', 'lua', 'vue', 'css', 'html', 'prisma' }
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'vue', 'typescript', 'tsx', 'rust', 'css', 'javascript' },
+  pattern = { 'vue', 'typescript', 'tsx', 'rust', 'css', 'javascript', 'prisma' },
   callback = function()
     vim.treesitter.start()
   end,

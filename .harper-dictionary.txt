@@ -1,0 +1,3 @@
+Gitsigns
+LazyGit
+stylua

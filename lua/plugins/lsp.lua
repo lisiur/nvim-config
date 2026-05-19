@@ -42,6 +42,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 local servers = {
   rust_analyzer = {},
   ts_ls = {},
+  harper_ls = {},
 
   stylua = {},
   lua_ls = {
