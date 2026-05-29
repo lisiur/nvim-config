@@ -190,6 +190,8 @@ function M.create(opts)
     end
     config = config or {}
 
+    vim.fn.setreg('+', prompt)
+
     local escaped_prompt = (prompt:gsub("'", "'\\''"))
     vim.fn.system(string.format("zellij action write-chars --pane-id %s '%s'", pane_id, escaped_prompt))
 
