@@ -106,6 +106,9 @@ require('lualine').setup {
   options = {
     section_separators = '',
     component_separators = '',
+    disabled_filetypes = {
+      winbar = { 'sidekick_terminal' },
+    },
   },
   winbar = {
     lualine_c = {
@@ -132,6 +135,7 @@ vim.pack.add {
   'https://github.com/romgrk/barbar.nvim',
 }
 require('barbar').setup {
+  exclude_ft = { 'sidekick_terminal' },
   no_name_title = '',
 }
 

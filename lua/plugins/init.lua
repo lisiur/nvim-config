@@ -5,5 +5,6 @@ require('plugins.treesitter')
 require('plugins.cmp')
 require('plugins.lsp')
 require('plugins.git')
+require('plugins.ai')
 require('plugins.enhanced')
 

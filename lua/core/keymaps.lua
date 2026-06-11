@@ -26,6 +26,12 @@ vim.keymap.set({ 'n', 'v' }, 'ge', 'G', { desc = 'Goto last line' })
 vim.keymap.set({ 'n', 'v' }, 'gh', '^', { desc = 'Goto line start' })
 vim.keymap.set({ 'n', 'v' }, 'gl', '$', { desc = 'Goto line end' })
 
+-- Navigate windows
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Go to left window' })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Go to lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Go to upper window' })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to right window' })
+
 -- Esc to switch mode to normal from terminal
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
