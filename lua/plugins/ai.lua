@@ -38,6 +38,11 @@ vim.pack.add {
 require('sidekick').setup {
   nes = { enabled = false },
   cli = {
+    win = {
+      split = {
+        width = 130
+      }
+    },
     mux = {
       backend = 'zellij',
       enabled = true,
